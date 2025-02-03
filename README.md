@@ -3,7 +3,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Dropshipping Store</title>
+    <title>VRTVON </title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -69,19 +69,19 @@
         <h2>Welcome to Our Store</h2>
         <p>Find the best products for dropshipping!</p>
         <div class="product">
-            <img src="https://via.placeholder.com/150" alt="Product 1">
+            <img src=""alt="NVIDIA RTX 5070">
             <h3>Product 1</h3>
-            <p>Price: $20</p>
+            <p>Price: $549</p>
         </div>
         <div class="product">
-            <img src="https://via.placeholder.com/150" alt="Product 2">
+            <img src="https://sl.bing.net/eqsKeoTGCRw" alt="NVIDIA RTX 5090">
             <h3>Product 2</h3>
-            <p>Price: $30</p>
+            <p>Price: $1599</p>
         </div>
         <div class="product">
-            <img src="https://via.placeholder.com/150" alt="Product 3">
+            <img src="https://via.placeholder.com/150" alt="NVIDIA RTX 4090">
             <h3>Product 3</h3>
-            <p>Price: $40</p>
+            <p>Price: $1399</p>
         </div>
     </div>
 
