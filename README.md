@@ -1,119 +1,93 @@
-import os
-from django.conf import settings
-from django.conf.urls.static import static
-from django.contrib import admin
-from django.urls import path
-from django.shortcuts import render, get_object_or_404
-from django.db import models
-from django.http import HttpResponse
-
-# === SETTINGS CONFIGURATION ===
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-settings.configure(
-    DEBUG=True,
-    SECRET_KEY='your-secret-key',
-    INSTALLED_APPS=[
-        'django.contrib.admin',
-        'django.contrib.auth',
-        'django.contrib.contenttypes',
-        'django.contrib.sessions',
-        'django.contrib.messages',
-        'django.contrib.staticfiles',
-    ],
-    MIDDLEWARE=[
-        'django.middleware.security.SecurityMiddleware',
-        'django.contrib.sessions.middleware.SessionMiddleware',
-        'django.middleware.common.CommonMiddleware',
-        'django.middleware.csrf.CsrfViewMiddleware',
-        'django.contrib.auth.middleware.AuthenticationMiddleware',
-        'django.contrib.messages.middleware.MessageMiddleware',
-        'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    ],
-    ROOT_URLCONF=__name__,
-    TEMPLATES=[
-        {
-            'BACKEND': 'django.template.backends.django.DjangoTemplates',
-            'DIRS': [os.path.join(BASE_DIR, 'templates')],
-            'APP_DIRS': True,
-            'OPTIONS': {
-                'context_processors': [
-                    'django.template.context_processors.debug',
-                    'django.template.context_processors.request',
-                    'django.contrib.auth.context_processors.auth',
-                    'django.contrib.messages.context_processors.messages',
-                ],
-            },
-        },
-    ],
-    DATABASES={
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Dropshipping Store</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
         }
-    },
-    STATIC_URL='/static/',
-    MEDIA_URL='/media/',
-    MEDIA_ROOT=os.path.join(BASE_DIR, 'media'),
-)
+        header {
+            background-color: #333;
+            color: white;
+            padding: 10px 0;
+            text-align: center;
+        }
+        nav a {
+            color: white;
+            padding: 10px;
+            text-decoration: none;
+        }
+        .container {
+            width: 80%;
+            margin: 20px auto;
+        }
+        .product {
+            display: inline-block;
+            width: 30%;
+            margin: 10px;
+            padding: 15px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        .product img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+        .product h3 {
+            margin: 10px 0;
+        }
+        footer {
+            text-align: center;
+            padding: 10px 0;
+            background-color: #333;
+            color: white;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>My Dropshipping Store</h1>
+        <nav>
+            <a href="/">Home</a>
+            <a href="/products">Products</a>
+            <a href="/contact">Contact Us</a>
+        </nav>
+    </header>
 
-# === MODELS ===
-class Category(models.Model):
-    name = models.CharField(max_length=255)
-    def __str__(self):
-        return self.name
+    <div class="container" id="content">
+        <h2>Welcome to Our Store</h2>
+        <p>Find the best products for dropshipping!</p>
+        <div class="product">
+            <img src="https://via.placeholder.com/150" alt="Product 1">
+            <h3>Product 1</h3>
+            <p>Price: $20</p>
+        </div>
+        <div class="product">
+            <img src="https://via.placeholder.com/150" alt="Product 2">
+            <h3>Product 2</h3>
+            <p>Price: $30</p>
+        </div>
+        <div class="product">
+            <img src="https://via.placeholder.com/150" alt="Product 3">
+            <h3>Product 3</h3>
+            <p>Price: $40</p>
+        </div>
+    </div>
 
-class Product(models.Model):
-    name = models.CharField(max_length=255)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    description = models.TextField()
-    price = models.DecimalField(max_digits=10, decimal_places=2)
-    stock = models.IntegerField()
-    image = models.ImageField(upload_to='products/')
-    def __str__(self):
-        return self.name
-
-class Order(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    quantity = models.IntegerField()
-    total_price = models.DecimalField(max_digits=10, decimal_places=2)
-    date_ordered = models.DateTimeField(auto_now_add=True)
-    customer_name = models.CharField(max_length=255)
-    customer_address = models.TextField()
-    shipped = models.BooleanField(default=False)
-
-# === ADMIN ===
-admin.site.register(Category)
-admin.site.register(Product)
-admin.site.register(Order)
-
-# === VIEWS ===
-def product_list(request):
-    products = Product.objects.all()
-    return render(request, 'store/product_list.html', {'products': products})
-
-def product_detail(request, pk):
-    product = get_object_or_404(Product, pk=pk)
-    return render(request, 'store/product_detail.html', {'product': product})
-
-def place_order(request, pk):
-    product = get_object_or_404(Product, pk=pk)
-    if request.method == 'POST':
-        quantity = int(request.POST['quantity'])
-        total_price = quantity * product.price
-        order = Order.objects.create(product=product, quantity=quantity, total_price=total_price, customer_name=request.POST['name'], customer_address=request.POST['address'])
-        order.save()
-        return render(request, 'store/order_success.html', {'order': order})
-    return render(request, 'store/place_order.html', {'product': product})
-
-# === URLS ===
-urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', product_list, name='product_list'),
-    path('product/<int:pk>/', product_detail, name='product_detail'),
-    path('order/<int:pk>/', place_order, name='place_order'),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
-# === RUN DEVELOPMENT SERVER ===
-if __name__ == '__main__':
-    from django.core.management import execute_from_command_line
-    execute_from_command_line(['manage.py', 'runserver'])
+    <footer>
+        <p>&copy; 2025 My Dropshipping Store</p>
+    </footer>
+</body>
+</html>
