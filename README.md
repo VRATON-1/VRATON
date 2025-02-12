@@ -3,13 +3,20 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VRTVON </title>
+    <title>VRTVON</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f4f4f4;
+            background: linear-gradient(135deg, #ff7e5f, #feb47b, #86a8e7, #91eae4);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+        }
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
         header {
             background-color: #333;
@@ -69,7 +76,7 @@
         <h2>Welcome to Our Store</h2>
         <p>Find the best products for dropshipping!</p>
         <div class="product">
-            <img src=""alt="NVIDIA RTX 5070">
+            <img src="" alt="NVIDIA RTX 5070">
             <h3>Product 1</h3>
             <p>Price: $549</p>
         </div>
@@ -90,3 +97,4 @@
     </footer>
 </body>
 </html>
+
